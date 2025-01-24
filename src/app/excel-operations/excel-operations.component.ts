@@ -190,15 +190,20 @@ export class ExcelOperationsComponent {
   }
 
   private async createSplitZipFile(splitFiles: Map<string, any[][]>): Promise<Blob> {
-    const zip = new JSZip(); // No error now
+  const zip = new JSZip();
 
-    splitFiles.forEach((data, key) => {
-      const blob = this.createExcelBlob(data, key);
-      zip.file(`${key}.xlsx`, blob);
-    });
+  splitFiles.forEach((data, key) => {
+    // Truncate key to 30 characters, append `.xlsx` to create the filename
+    const truncatedKey = key.substring(0, 30);
+    const sanitizedFileName = `${truncatedKey}.xlsx`;
 
-    return await zip.generateAsync({ type: 'blob' });
-  }
+    const blob = this.createExcelBlob(data, sanitizedFileName);
+    zip.file(sanitizedFileName, blob);
+  });
+
+  return await zip.generateAsync({ type: 'blob' });
+}
+
 
   private downloadFile(blob: Blob, fileName: string) {
     const link = document.createElement('a');
