@@ -194,7 +194,7 @@ export class ExcelOperationsComponent {
 
   splitFiles.forEach((data, key) => {
     // Truncate key to 30 characters, append `.xlsx` to create the filename
-    const truncatedKey = key.substring(0, 30);
+    const truncatedKey = key.substring(0, 25);
     const sanitizedFileName = `${truncatedKey}.xlsx`;
 
     const blob = this.createExcelBlob(data, sanitizedFileName);
